@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+src/lib/*
+src/include/SDL2/*
