@@ -13,6 +13,10 @@ Game::~Game()
 void Game::Init(const char* windowName, int width, int height)
 {
     SDL_Init(SDL_INIT_EVERYTHING);
+    if(TTF_Init() < 0)
+    {
+        printf("Failed to initialize TTF: %s\n", SDL_GetError());
+    }
     
     window = Window::GetInstance()->CreateWindow(windowName, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height);
     if(window == NULL)
@@ -31,6 +35,8 @@ void Game::Init(const char* windowName, int width, int height)
     CreatePlayer();
     CreateEnemies();
     CreateBullets();
+
+    userInterface = std::make_shared<UserInterface>();
 
     bGameActive = true;
 }
@@ -103,6 +109,8 @@ void Game::Render()
         sprite->Render();
     }
 
+    userInterface->Render();
+
     SDL_RenderPresent(renderer);
 }
 
@@ -115,7 +123,6 @@ void Game::CreatePlayer()
     ptrPlayer->SetPos(Vector2f(windowSize.x * 0.5f - playerSize.x * 0.5f, windowSize.y * 0.9f - playerSize.y * 0.5f));
     sprites.push_back(ptrPlayer);
 
-    
 }
 
 void Game::CreateEnemies()
@@ -256,6 +263,8 @@ void Game::Quit()
     Window::GetInstance()->Destroy();
 
     bGameActive = false;
+    userInterface = nullptr;
+    TTF_Quit();
     SDL_Quit();
 }
 

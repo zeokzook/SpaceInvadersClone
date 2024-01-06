@@ -11,7 +11,9 @@
 #include "Renderer.h"
 #include "Window.h"
 #include "HelperFunctions.h"
+#include "UserInterface.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 const int MAXBULLETCOUNT = 25;
 
@@ -28,6 +30,8 @@ protected:
     std::list<std::shared_ptr<Sprite>> sprites;
 
     std::weak_ptr<Player> player;
+
+    std::shared_ptr<UserInterface> userInterface;
 
 public:
     Game();
